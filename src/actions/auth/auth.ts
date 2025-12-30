@@ -119,3 +119,11 @@ export async function getAccessTokenAction(): Promise<Payload | null> {
         return null;
     }
 }
+
+export async function loginWithGoogle() {
+    redirect(`${API_URL}/auth/google`)
+}
+
+export async function loginWithGithub() {
+    redirect(`${API_URL}/auth/github`)
+}

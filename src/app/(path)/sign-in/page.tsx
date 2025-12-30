@@ -9,8 +9,10 @@ import {Button} from "@/components/ui/button";
 import {useSignIn} from "@/hooks/mutations/auth/use-sign-in";
 import {toast} from "sonner";
 import google from "@/assets/google.png";
+import github from "@/assets/github-mark.svg"
 import Image from 'next/image';
 import {useRouter} from "next/navigation";
+import {loginWithGithub, loginWithGoogle} from "@/actions/auth/auth";
 
 export default function SignInPage() {
     const [email, setEmail] = useState("");
@@ -53,19 +55,31 @@ export default function SignInPage() {
                                    onChange={(e) => setPassword(e.target.value)} type={'password'} name={'password'}
                                    placeholder={'password'}/>
                         </div>
-                        <div className={'flex flex-col gap-y-2 mt-3'}>
+                        <div className={'flex flex-col gap-y-2 mt-2'}>
                             <Button disabled={isSignIn} variant={'outline_red'}
                                     className={'font-bold cursor-pointer rounded-sm p-2'}
                                     type={'submit'}>로그인</Button>
-                            <div className={'flex flex-col gap-2 mt-1'}>
-                                <Link href={'/sign-up'} className={'text-xs text-muted-foreground hover:underline'}>계정이 없으신가요? 회원가입</Link>
-                                <Link href={'/forget-password'} className={'text-xs text-muted-foreground hover:underline'}>비밀번호를 잊으셨나요?</Link>
+                            <div className={'flex gap-4 mt-1 justify-center items-center text-center text-sm'}>
+                                <Link href={'/forget-password'}
+                                      className={'text-xs text-muted-foreground hover:underline'}>아이디 찾기</Link>
+                                <div className={'text-xs text-muted-foreground'}>/</div>
+                                <Link href={'/forget-password'}
+                                      className={'text-xs text-muted-foreground hover:underline'}>비밀번호 찾기</Link>
+                                <div className={'text-xs text-muted-foreground'}>/</div>
+                                <Link href={'/sign-up'}
+                                      className={'text-xs text-muted-foreground hover:underline'}>회원가입</Link>
                             </div>
                             <hr className={'mt-1'}/>
                         </div>
-                        <div className={'flex justify-center'}>
-                            <Button disabled={isSignIn} variant={'outline'} size={"icon-lg"} className={'rounded-lg'}>
+                        <div className={'flex justify-center gap-x-3'}>
+                            <Button onClick={loginWithGoogle} disabled={isSignIn} variant={'outline'} size={"icon-lg"}
+                                    className={'rounded-lg'}>
                                 <Image width={24} height={24} src={google.src} alt={'google'}
+                                       className={'cursor-pointer rounded- object-cover'}/>
+                            </Button>
+                            <Button onClick={loginWithGithub} disabled={isSignIn} variant={'outline'} size={"icon-lg"}
+                                    className={'rounded-lg'}>
+                                <Image width={24} height={24} src={github.src} alt={'github'}
                                        className={'cursor-pointer rounded- object-cover'}/>
                             </Button>
                         </div>
