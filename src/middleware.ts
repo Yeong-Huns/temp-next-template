@@ -2,21 +2,25 @@ import {NextRequest} from "next/dist/server/web/spec-extension/request";
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
 
 export function middleware(request: NextRequest) {
-    const token = request.cookies.get('accessToken');
+    const accessToken = request.cookies.get('accessToken');
+    const refreshToken = request.cookies.get('refreshToken');
+
     const pathname = request.nextUrl.pathname;
 
     const publicPages = ['/sign-in', '/sign-up'];
-    const isPublicPage =  publicPages.some(page => pathname.startsWith(page));
+    const isPublicPage = publicPages.some(page => pathname.startsWith(page));
+
+    const isLoggedIn = accessToken || refreshToken;
 
     /* 로그인이 필요한 서비스 접근 시 */
-    if (!token && !isPublicPage) {
+    if (!isLoggedIn && !isPublicPage) {
         return NextResponse.redirect(new URL('/sign-in', request.url));
     }
 
     /* 이미 로그인했는데 로그인 페이지 접근 시 */
-    if (token && isPublicPage) {
+    if (isLoggedIn && isPublicPage) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 }
 
-export const config = { matcher: ['/((?!api|_next|static).*)'] };
+export const config = {matcher: ['/((?!api|_next|static).*)']};

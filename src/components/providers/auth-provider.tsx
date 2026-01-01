@@ -6,9 +6,11 @@ import {Suspense, useEffect} from "react";
 import {toast} from "sonner";
 import GlobalLoader from "@/components/loader/global-loader";
 import {getAccessTokenAction} from "@/actions/auth/auth";
+import { useRouter } from "next/navigation";
 
 function AuthListener() {
     const [user, setUser] = useAtom(userAtom);
+    const router = useRouter();
 
     useEffect(() => {
         const checkUser = async () => {
@@ -19,6 +21,7 @@ function AuthListener() {
                 } catch (e) {
                     setUser(null);
                     toast.error('로그인이 만료 되었습니다.', {position: "top-center"});
+                    router.push('/login');
                 }
             }
         }
